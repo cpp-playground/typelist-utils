@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  - RunSonar:
+  RunSonar:
     runs-on: ubuntu-latest
     env:
       SONAR_SCANNER_VERSION: 4.7.0.2747
@@ -50,7 +50,7 @@ jobs:
         run: |
           sonar-scanner
 
-  - RunCodeCov:
+  RunCodeCov:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
