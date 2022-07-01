@@ -60,6 +60,7 @@ jobs:
         run: |
           mkdir build
           cmake -S . -B build  -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
+          cmake --build build/
           ./build/typelist_utils
           gcov -o . test
 

@@ -29,14 +29,13 @@ if(ENABLE_COVERAGE)
   )
 endif()
 
-target_compile_options(
-  typelist_utils
-  PRIVATE
-    -Wall
-    -Wextra
-    -pedantic
-    -Werror
+add_compile_options(
+  -Wall
+  -Wextra
+  -pedantic
+  -Werror
 )
+
 set(
   CTEST_COVERAGE_COMMAND
   "llvm-cov"
