@@ -55,8 +55,8 @@ jobs:
   RunCodeCov:
     runs-on: ubuntu-latest
     env:
-      CC: /usr/bin/clang
-      CXX: /usr/bin/clang++
+      CC: /usr/bin/clang-14
+      CXX: /usr/bin/clang++-14
     steps:
       - name: Checkout
         uses: actions/checkout@v3
