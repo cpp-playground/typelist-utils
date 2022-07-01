@@ -67,7 +67,8 @@ jobs:
           cmake -S . -B build  -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
           cmake --build build/
           ./build/typelist_utils
-          gcov -o . test
+          llvm-profdata-14 merge -sparse ./default.profraw -o ./default.profdata
+          llvm-cov-14 show ./build/typelist_utils -instr-profile=./default.profdata --format=text > ./build/coverage.txt
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
