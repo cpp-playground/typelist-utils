@@ -12,20 +12,13 @@ target_include_directories(typelist_utils PRIVATE include)
 target_link_libraries(typelist_utils PRIVATE Catch2::Catch2WithMain)
 
 if(ENABLE_COVERAGE)
-  target_compile_options(
-    typelist_utils
-    PRIVATE
-      -fprofile-instr-generate
-      -fcoverage-mapping
-      -mllvm
-      -runtime-counter-relocation
-  )
+  target_compile_options(typelist_utils PRIVATE -fprofile-arcs -ftest-coverage)
 
   target_link_options(
     typelist_utils
     PRIVATE
-    -fprofile-instr-generate
-    -fcoverage-mapping
+    -fprofile-arcs
+    -ftest-coverage
   )
 endif()
 
