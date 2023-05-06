@@ -105,7 +105,7 @@ template <tl::concepts::tuple T, template <typename> typename F>
 using for_each_t = typename for_each<T, F>::type;
 
 template <tl::concepts::tuple T, std::size_t first, std::size_t second>
-    requires tl::concepts::has_valid_swap_indices<T, first, second>
+    requires tl::concepts::valid_swap_indices<T, first, second>
 class swap_elements
 {
     template <std::size_t... start_to_first_indexes,
