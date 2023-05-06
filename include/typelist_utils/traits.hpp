@@ -130,7 +130,7 @@ concept unary_type_predicate = requires
  * 2 indices are valid if the first is strictly smaller than the second and that the second
  * is strictly smaller than the provided tuple size
  *
- * @tparam T Tuplu to check indices validity agains
+ * @tparam T Tuple to check indices validity against
  * @tparam first First index
  * @tparam second Second index
  */
