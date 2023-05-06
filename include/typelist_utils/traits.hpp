@@ -54,7 +54,7 @@ concept unary_type_predicate = requires
 };
 
 template <typename T, std::size_t first, std::size_t second>
-concept have_valid_swap_indices = requires {
+concept has_valid_swap_indices = requires {
     requires first < second;
     requires second < std::tuple_size_v<T>;
 };
