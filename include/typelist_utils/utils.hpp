@@ -22,7 +22,7 @@ template <tl::concepts::tuple T, typename E>
 constexpr auto start_with_v = start_with<T, E>::value;
 
 template <tl::concepts::tuple T, typename E>
-struct count
+class count
 {
     template <std::size_t... indexes>
     static constexpr auto impl(std::index_sequence<indexes...>)
@@ -30,6 +30,7 @@ struct count
         return ((std::is_same_v<E, std::tuple_element_t<indexes, T>> ? 1 : 0) + ... + 0);
     }
 
+  public:
     static constexpr auto value =
         impl(std::make_integer_sequence<std::size_t, std::tuple_size_v<T>>{});
 };
@@ -62,7 +63,7 @@ using concat_t = typename tl::concat<T, U>::type;
 
 template <tl::concepts::tuple T, std::size_t split_index>
     requires(split_index <= std::tuple_size_v<T>)
-struct split
+class split
 {
     template <std::size_t start, std::size_t... indexes>
     static constexpr auto impl(std::index_sequence<indexes...>)
@@ -70,6 +71,7 @@ struct split
         return std::tuple<std::tuple_element_t<start + indexes, T>...>{};
     }
 
+  public:
     using l = decltype(impl<0>(std::make_integer_sequence<std::size_t, split_index>()));
     using r = decltype(impl<split_index>(
         std::make_integer_sequence<std::size_t, std::tuple_size_v<T> - split_index>()));
@@ -108,7 +110,7 @@ template <tl::concepts::tuple T, std::size_t first, std::size_t second>
         requires first < second;
         requires second < std::tuple_size_v<T>;
     }
-struct swap_elements
+class swap_elements
 {
     template <std::size_t... start_to_first_indexes,
               std::size_t... first_to_second_indexes,
@@ -140,6 +142,7 @@ struct swap_elements
         return swap_helper(start_to_first, first_to_second, second_to_end);
     }
 
+  public:
     using type = decltype(swap_helper_boilerplate());
 };
 
