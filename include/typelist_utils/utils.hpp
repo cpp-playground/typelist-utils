@@ -105,21 +105,12 @@ template <tl::concepts::tuple T, template <typename> typename F>
 using for_each_t = typename for_each<T, F>::type;
 
 template <tl::concepts::tuple T, std::size_t first, std::size_t second>
-    requires requires
-    {
-        requires first < second;
-        requires second < std::tuple_size_v<T>;
-    }
+    requires has_valid_swap_indices<T, first, second>
 class swap_elements
 {
     template <std::size_t... start_to_first_indexes,
               std::size_t... first_to_second_indexes,
               std::size_t... second_to_end_indexes>
-        requires requires
-        {
-            requires first < second;
-            requires second < std::tuple_size_v<T>;
-        }
     static constexpr auto swap_helper(std::index_sequence<start_to_first_indexes...>,
                                       std::index_sequence<first_to_second_indexes...>,
                                       std::index_sequence<second_to_end_indexes...>)
