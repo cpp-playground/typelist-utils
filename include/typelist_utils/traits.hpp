@@ -34,7 +34,6 @@ constexpr auto is_tuple_v = is_tuple<T>::value;
 
 }  // namespace tl::traits
 
-
 /**
  * @brief Namespace containing concepts
  */
@@ -57,7 +56,7 @@ template <typename T>
 concept tuple = tl::traits::is_tuple_v<T>;
 
 /**
- * @brief Concept checking that a given type can be used as a binary value predicate for 
+ * @brief Concept checking that a given type can be used as a binary value predicate for
  * 2 other types.
  *
  * A binary value predicate is a type that, given 2 types exposes a static field
@@ -68,15 +67,14 @@ concept tuple = tl::traits::is_tuple_v<T>;
  * @tparam U Second type for the predicate to be used on
  */
 template <template <typename, typename> typename P, typename T, typename U>
-concept binary_value_predicate = requires
-{
-    {
-        P<T, U>::value
-        } -> same_as<const bool&>;
-};
+concept binary_value_predicate = requires {
+                                     {
+                                         P<T, U>::value
+                                         } -> same_as<const bool&>;
+                                 };
 
 /**
- * @brief Concept checking that a given type can be used as a unary value predicate for 
+ * @brief Concept checking that a given type can be used as a unary value predicate for
  * another type.
  *
  * A unary value predicate is a type that, given another types exposes a static field
@@ -86,15 +84,14 @@ concept binary_value_predicate = requires
  * @tparam T Type for the predicate to be used on
  */
 template <template <typename> typename P, typename T>
-concept unary_value_predicate = requires
-{
-    {
-        P<T>::value
-        } -> same_as<const bool&>;
-};
+concept unary_value_predicate = requires {
+                                    {
+                                        P<T>::value
+                                        } -> same_as<const bool&>;
+                                };
 
 /**
- * @brief Concept checking that a given type can be used as a binary type predicate for 
+ * @brief Concept checking that a given type can be used as a binary type predicate for
  * 2 other types.
  *
  * A binary type predicate is a type that, given 2 types exposes a type member named type
@@ -104,13 +101,10 @@ concept unary_value_predicate = requires
  * @tparam U Second type for the predicate to be used on
  */
 template <template <typename, typename> typename P, typename T, typename U>
-concept binary_type_predicate = requires
-{
-    typename P<T, U>::type;
-};
+concept binary_type_predicate = requires { typename P<T, U>::type; };
 
 /**
- * @brief Concept checking that a given type can be used as a unary type predicate for 
+ * @brief Concept checking that a given type can be used as a unary type predicate for
  * another type.
  *
  * A unary type predicate is a type that, given another type exposes a type member named type
@@ -119,10 +113,7 @@ concept binary_type_predicate = requires
  * @tparam T Type for the predicate to be used on
  */
 template <template <typename> typename P, typename T>
-concept unary_type_predicate = requires
-{
-    typename P<T>::type;
-};
+concept unary_type_predicate = requires { typename P<T>::type; };
 
 /**
  * @brief Concept checking that a pair of indices are valid swap indices for a given tuple
@@ -136,9 +127,9 @@ concept unary_type_predicate = requires
  */
 template <typename T, std::size_t first, std::size_t second>
 concept valid_swap_indices = requires {
-    requires tl::concepts::tuple<T>;
-    requires first < second;
-    requires second < std::tuple_size_v<T>;
-};
+                                 requires tl::concepts::tuple<T>;
+                                 requires first < second;
+                                 requires second < std::tuple_size_v<T>;
+                             };
 
 }  // namespace tl::concepts

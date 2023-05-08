@@ -6,6 +6,12 @@
 
 namespace tl
 {
+/**
+ * @brief Checks if a tuple-like type starts with a given type.
+ *
+ * @tparam T The tuple-like type.
+ * @tparam E The type to check for.
+ */
 template <tl::concepts::tuple T, typename E>
 struct start_with
 {
@@ -21,6 +27,12 @@ struct start_with<std::tuple<T, Ts...>, E>
 template <tl::concepts::tuple T, typename E>
 constexpr auto start_with_v = start_with<T, E>::value;
 
+/**
+ * @brief Counts the number of times a type appears in a tuple-like type.
+ *
+ * @tparam T The tuple-like type.
+ * @tparam E The type to count.
+ */
 template <tl::concepts::tuple T, typename E>
 class count
 {
@@ -41,6 +53,11 @@ constexpr auto count_v = count<T, E>::value;
 template <tl::concepts::tuple T, typename E>
 constexpr auto contains_v = 0 < count_v<T, E>;
 
+/**
+ * @brief Checks if a tuple-like type contains all of the given types.
+ * @tparam T The tuple-like type.
+ * @tparam Es The types to check for.
+ */
 template <tl::concepts::tuple T, typename... Es>
 struct contains_all
 {
@@ -51,6 +68,11 @@ struct contains_all
 template <tl::concepts::tuple T, typename... Es>
 constexpr auto contains_all_v = contains_all<T, Es...>::value;
 
+/**
+ * @brief Concatenates two tuple-like types.
+ * @tparam T The first tuple-like type.
+ * @tparam U The second tuple-like type.
+ */
 template <tl::concepts::tuple T, tl::concepts::tuple U>
 struct concat;
 template <typename... Ts, typename... Us>
@@ -61,6 +83,11 @@ struct concat<std::tuple<Ts...>, std::tuple<Us...>>
 template <tl::concepts::tuple T, tl::concepts::tuple U>
 using concat_t = typename tl::concat<T, U>::type;
 
+/**
+ * @brief split a tuple-like type in 2 at the given index.
+ * @tparam T The tuple-like type.
+ * @tparam split_index The index to split at.
+ */
 template <tl::concepts::tuple T, std::size_t split_index>
     requires(split_index <= std::tuple_size_v<T>)
 class split
@@ -85,6 +112,11 @@ template <tl::concepts::tuple T, std::size_t split_index>
     requires(split_index <= std::tuple_size_v<T>)
 using split_l_t = typename split<T, split_index>::l;
 
+/**
+ * @brief Applies a unary type predicate to each type in a tuple-like type.
+ * @tparam T The tuple-like type.
+ * @tparam F The unary type predicate.
+ */
 template <tl::concepts::tuple T, template <typename> typename F>
 struct for_each;
 
@@ -104,6 +136,12 @@ struct for_each<std::tuple<T, Ts...>, F>
 template <tl::concepts::tuple T, template <typename> typename F>
 using for_each_t = typename for_each<T, F>::type;
 
+/**
+ * @brief Swap 2 elements in a tuple-like type.
+ * @tparam T The tuple-like type.
+ * @tparam first The first index.
+ * @tparam second The second index.
+ */
 template <tl::concepts::tuple T, std::size_t first, std::size_t second>
     requires tl::concepts::valid_swap_indices<T, first, second>
 class swap_elements

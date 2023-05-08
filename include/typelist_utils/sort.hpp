@@ -62,6 +62,11 @@ using merge_t = typename merge<A, B, Predicate>::type;
 
 }  // namespace sort_impl
 
+/**
+ * @brief Sorts a tuple-like type using the given predicate.
+ * @tparam T The tuple-like type.
+ * @tparam Predicate The binary value predicate to use for sorting.
+ */
 template <tl::concepts::tuple T, template <typename, typename> typename Predicate>
 struct sort;
 
