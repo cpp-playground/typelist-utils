@@ -9,7 +9,13 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/cpp-playground/containers
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
       actions: read

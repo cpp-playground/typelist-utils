@@ -60,6 +60,11 @@ jobs:
 
   RunCodeCov:
     runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/cpp-playground/containers
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
     env:
       CC: /usr/bin/clang-17
       CXX: /usr/bin/clang++-17
