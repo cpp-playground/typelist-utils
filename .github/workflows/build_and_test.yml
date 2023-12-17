@@ -11,7 +11,7 @@ jobs:
   RunSonar:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/owner/image
+      image: ghcr.io/cpp-playground/containers
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
