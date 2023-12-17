@@ -42,10 +42,12 @@ template <typename A,
           template <typename, typename>
           typename Predicate>
     requires tl::concepts::binary_value_predicate<Predicate, A, B>
-struct merge<std::tuple<A, As...>, std::tuple<B, Bs...>, Predicate>
+class merge<std::tuple<A, As...>, std::tuple<B, Bs...>, Predicate>
 {
     using list_a = std::tuple<A, As...>;
     using list_b = std::tuple<B, Bs...>;
+
+  public:
     using type = std::conditional_t<
         Predicate<A, B>::value,
         tl::concat_t<std::tuple<A>, typename merge<std::tuple<As...>, list_b, Predicate>::type>,
@@ -60,6 +62,11 @@ using merge_t = typename merge<A, B, Predicate>::type;
 
 }  // namespace sort_impl
 
+/**
+ * @brief Sorts a tuple-like type using the given predicate.
+ * @tparam T The tuple-like type.
+ * @tparam Predicate The binary value predicate to use for sorting.
+ */
 template <tl::concepts::tuple T, template <typename, typename> typename Predicate>
 struct sort;
 
@@ -77,12 +84,13 @@ struct sort<std::tuple<T>, Predicate>
 
 // Inductive step
 template <typename T, typename... Ts, template <typename, typename> typename Predicate>
-struct sort<std::tuple<T, Ts...>, Predicate>
+class sort<std::tuple<T, Ts...>, Predicate>
 {
     using input_t = std::tuple<T, Ts...>;
     using left_sort_t = typename sort<tl::sort_impl::split_half_l_t<input_t>, Predicate>::type;
     using right_sort_t = typename sort<tl::sort_impl::split_half_r_t<input_t>, Predicate>::type;
 
+  public:
     using type = tl::sort_impl::merge_t<left_sort_t, right_sort_t, Predicate>;
 };
 

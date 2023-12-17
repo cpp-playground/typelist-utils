@@ -6,6 +6,12 @@
 
 namespace tl
 {
+/**
+ * @brief Checks if a tuple-like type starts with a given type.
+ *
+ * @tparam T The tuple-like type.
+ * @tparam E The type to check for.
+ */
 template <tl::concepts::tuple T, typename E>
 struct start_with
 {
@@ -21,8 +27,14 @@ struct start_with<std::tuple<T, Ts...>, E>
 template <tl::concepts::tuple T, typename E>
 constexpr auto start_with_v = start_with<T, E>::value;
 
+/**
+ * @brief Counts the number of times a type appears in a tuple-like type.
+ *
+ * @tparam T The tuple-like type.
+ * @tparam E The type to count.
+ */
 template <tl::concepts::tuple T, typename E>
-struct count
+class count
 {
     template <std::size_t... indexes>
     static constexpr auto impl(std::index_sequence<indexes...>)
@@ -30,6 +42,7 @@ struct count
         return ((std::is_same_v<E, std::tuple_element_t<indexes, T>> ? 1 : 0) + ... + 0);
     }
 
+  public:
     static constexpr auto value =
         impl(std::make_integer_sequence<std::size_t, std::tuple_size_v<T>>{});
 };
@@ -40,6 +53,11 @@ constexpr auto count_v = count<T, E>::value;
 template <tl::concepts::tuple T, typename E>
 constexpr auto contains_v = 0 < count_v<T, E>;
 
+/**
+ * @brief Checks if a tuple-like type contains all of the given types.
+ * @tparam T The tuple-like type.
+ * @tparam Es The types to check for.
+ */
 template <tl::concepts::tuple T, typename... Es>
 struct contains_all
 {
@@ -50,6 +68,11 @@ struct contains_all
 template <tl::concepts::tuple T, typename... Es>
 constexpr auto contains_all_v = contains_all<T, Es...>::value;
 
+/**
+ * @brief Concatenates two tuple-like types.
+ * @tparam T The first tuple-like type.
+ * @tparam U The second tuple-like type.
+ */
 template <tl::concepts::tuple T, tl::concepts::tuple U>
 struct concat;
 template <typename... Ts, typename... Us>
@@ -60,9 +83,14 @@ struct concat<std::tuple<Ts...>, std::tuple<Us...>>
 template <tl::concepts::tuple T, tl::concepts::tuple U>
 using concat_t = typename tl::concat<T, U>::type;
 
+/**
+ * @brief split a tuple-like type in 2 at the given index.
+ * @tparam T The tuple-like type.
+ * @tparam split_index The index to split at.
+ */
 template <tl::concepts::tuple T, std::size_t split_index>
     requires(split_index <= std::tuple_size_v<T>)
-struct split
+class split
 {
     template <std::size_t start, std::size_t... indexes>
     static constexpr auto impl(std::index_sequence<indexes...>)
@@ -70,6 +98,7 @@ struct split
         return std::tuple<std::tuple_element_t<start + indexes, T>...>{};
     }
 
+  public:
     using l = decltype(impl<0>(std::make_integer_sequence<std::size_t, split_index>()));
     using r = decltype(impl<split_index>(
         std::make_integer_sequence<std::size_t, std::tuple_size_v<T> - split_index>()));
@@ -83,6 +112,11 @@ template <tl::concepts::tuple T, std::size_t split_index>
     requires(split_index <= std::tuple_size_v<T>)
 using split_l_t = typename split<T, split_index>::l;
 
+/**
+ * @brief Applies a unary type predicate to each type in a tuple-like type.
+ * @tparam T The tuple-like type.
+ * @tparam F The unary type predicate.
+ */
 template <tl::concepts::tuple T, template <typename> typename F>
 struct for_each;
 
@@ -102,22 +136,19 @@ struct for_each<std::tuple<T, Ts...>, F>
 template <tl::concepts::tuple T, template <typename> typename F>
 using for_each_t = typename for_each<T, F>::type;
 
+/**
+ * @brief Swap 2 elements in a tuple-like type.
+ * @tparam T The tuple-like type.
+ * @tparam first The first index.
+ * @tparam second The second index.
+ */
 template <tl::concepts::tuple T, std::size_t first, std::size_t second>
-    requires requires
-    {
-        requires first < second;
-        requires second < std::tuple_size_v<T>;
-    }
-struct swap_elements
+    requires tl::concepts::valid_swap_indices<T, first, second>
+class swap_elements
 {
     template <std::size_t... start_to_first_indexes,
               std::size_t... first_to_second_indexes,
               std::size_t... second_to_end_indexes>
-        requires requires
-        {
-            requires first < second;
-            requires second < std::tuple_size_v<T>;
-        }
     static constexpr auto swap_helper(std::index_sequence<start_to_first_indexes...>,
                                       std::index_sequence<first_to_second_indexes...>,
                                       std::index_sequence<second_to_end_indexes...>)
@@ -140,6 +171,7 @@ struct swap_elements
         return swap_helper(start_to_first, first_to_second, second_to_end);
     }
 
+  public:
     using type = decltype(swap_helper_boilerplate());
 };
 
