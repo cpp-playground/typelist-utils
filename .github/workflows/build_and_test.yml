@@ -10,11 +10,17 @@ on:
 jobs:
   RunSonar:
     runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/owner/image
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
     env:
       SONAR_SCANNER_VERSION: 4.7.0.2747
       SONAR_HOST_URL: "https://sonarcloud.io"
-      CC: /usr/bin/clang
-      CXX: /usr/bin/clang++
+      CC: /usr/bin/clang-17
+      CXX: /usr/bin/clang++-17
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -55,8 +61,8 @@ jobs:
   RunCodeCov:
     runs-on: ubuntu-22.04
     env:
-      CC: /usr/bin/clang-14
-      CXX: /usr/bin/clang++-14
+      CC: /usr/bin/clang-17
+      CXX: /usr/bin/clang++-17
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -67,8 +73,8 @@ jobs:
           cmake -S . -B build  -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
           cmake --build build/
           ./build/typelist_utils
-          llvm-profdata-14 merge -sparse ./default.profraw -o ./default.profdata
-          llvm-cov-14 show ./build/typelist_utils -instr-profile=./default.profdata --format=text > ./build/coverage.txt
+          llvm-profdata-17 merge -sparse ./default.profraw -o ./default.profdata
+          llvm-cov-17 show ./build/typelist_utils -instr-profile=./default.profdata --format=text > ./build/coverage.txt
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
