@@ -10,7 +10,10 @@ set(
   ON
 )
 
-find_package(Catch2 REQUIRED)
+include(FetchContent)
+
+FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG v3.4.0)
+FetchContent_MakeAvailable(Catch2)
 
 add_executable(typelist_utils test/main.cpp test/test_utils.cpp test/test_sort.cpp)
 target_include_directories(typelist_utils PRIVATE include)
