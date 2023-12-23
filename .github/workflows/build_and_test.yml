@@ -106,8 +106,5 @@ jobs:
 
       - name: Check formatting
         run: |
-          find . \( -name \*.h -o -name \*.hh -o -name \*.hpp -o -name \*.cpp -o -name \*.cc \) -exec clang-format-17 -style=file -i {} + 2>&1
-          git diff -p 1>&2
-
-
+          find . \( -name \*.h -o -name \*.hh -o -name \*.hpp -o -name \*.cpp -o -name \*.cc \) -exec clang-format-17 -style=file -i --dry-run -Werror {} +
 
