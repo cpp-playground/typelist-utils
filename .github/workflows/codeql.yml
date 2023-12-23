@@ -10,14 +10,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/cpp-playground/containers
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.github_token }}
-    env:
-      CC: /usr/bin/clang-17
-      CXX: /usr/bin/clang++-17
 
     timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
     permissions:
