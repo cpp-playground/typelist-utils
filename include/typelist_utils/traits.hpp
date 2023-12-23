@@ -68,10 +68,10 @@ concept tuple = tl::traits::is_tuple_v<T>;
  */
 template <template <typename, typename> typename P, typename T, typename U>
 concept binary_value_predicate = requires {
-                                     {
-                                         P<T, U>::value
-                                         } -> same_as<const bool&>;
-                                 };
+    {
+        P<T, U>::value
+    } -> same_as<const bool&>;
+};
 
 /**
  * @brief Concept checking that a given type can be used as a unary value predicate for
@@ -85,10 +85,10 @@ concept binary_value_predicate = requires {
  */
 template <template <typename> typename P, typename T>
 concept unary_value_predicate = requires {
-                                    {
-                                        P<T>::value
-                                        } -> same_as<const bool&>;
-                                };
+    {
+        P<T>::value
+    } -> same_as<const bool&>;
+};
 
 /**
  * @brief Concept checking that a given type can be used as a binary type predicate for
@@ -127,9 +127,9 @@ concept unary_type_predicate = requires { typename P<T>::type; };
  */
 template <typename T, std::size_t first, std::size_t second>
 concept valid_swap_indices = requires {
-                                 requires tl::concepts::tuple<T>;
-                                 requires first < second;
-                                 requires second < std::tuple_size_v<T>;
-                             };
+    requires tl::concepts::tuple<T>;
+    requires first < second;
+    requires second < std::tuple_size_v<T>;
+};
 
 }  // namespace tl::concepts
