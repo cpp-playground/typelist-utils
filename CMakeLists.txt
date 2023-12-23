@@ -15,6 +15,10 @@ include(FetchContent)
 FetchContent_Declare(Catch2 GIT_REPOSITORY https://github.com/catchorg/Catch2.git GIT_TAG v3.4.0)
 FetchContent_MakeAvailable(Catch2)
 
+# Marks Catch2 headers as system so they won't fail when using clang-tidy
+get_target_property(CATCH2_IID Catch2 INTERFACE_INCLUDE_DIRECTORIES)
+set_target_properties(Catch2 PROPERTIES INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${CATCH2_IID}")
+
 add_executable(typelist_utils test/main.cpp test/test_utils.cpp test/test_sort.cpp)
 target_include_directories(typelist_utils PRIVATE include)
 target_link_libraries(typelist_utils PRIVATE Catch2::Catch2WithMain)

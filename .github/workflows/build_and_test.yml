@@ -108,3 +108,7 @@ jobs:
         run: |
           find . \( -name \*.h -o -name \*.hh -o -name \*.hpp -o -name \*.cpp -o -name \*.cc \) -not -path "./build/*" -exec clang-format-17 -style=file -i --dry-run -Werror {} +
 
+      - name: Check clang tidy
+        run: |
+          find . \( -name \*.h -o -name \*.hh -o -name \*.hpp -o -name \*.cpp -o -name \*.cc \) -not -path "./build/*" -exec clang-tidy-17 {} +
+
