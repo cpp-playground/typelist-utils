@@ -79,7 +79,7 @@ jobs:
           cmake --build build/
           ./build/typelist_utils
           llvm-profdata-17 merge -sparse ./default.profraw -o ./default.profdata
-          llvm-cov-17 show ./build/typelist_utils -instr-profile=./default.profdata --format=text > ./build/coverage.txt
+          llvm-cov-17 show ./build/typelist_utils -instr-profile=./default.profdata --format=text include test > ./build/coverage.txt
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
