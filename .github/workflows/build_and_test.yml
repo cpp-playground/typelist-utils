@@ -83,3 +83,31 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+
+  LintCheck:
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/cpp-playground/containers
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    env:
+      CC: /usr/bin/clang-17
+      CXX: /usr/bin/clang++-17
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: |
+          cmake -S . -B build
+          cp build/compile_commands.json .
+
+      - name: Check formatting
+        run: |
+          find . \( -name \*.h -o -name \*.hh -o -name \*.hpp -o -name \*.cpp -o -name \*.cc \) -exec clang-format-17 -style=file -i {} + 2>&1
+          git diff -p 1>&2
+
+
+
