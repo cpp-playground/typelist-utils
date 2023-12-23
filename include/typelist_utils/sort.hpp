@@ -26,8 +26,7 @@ struct merge;
 template <tl::concepts::tuple B, template <typename, typename> typename Predicate>
 struct merge<std::tuple<>, B, Predicate>
 {
-    using type = B;
-};
+    using type = B;};
 
 template <typename A, typename... As, template <typename, typename> typename Predicate>
 struct merge<std::tuple<A, As...>, std::tuple<>, Predicate>
